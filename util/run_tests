@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-TESTER_DIR=${SCRIPT_DIR}/tester
-DATA_DIR=${TESTER_DIR}/data
-MP3_DIR=${SCRIPT_DIR}/../mp3
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+TESTER_DIR="${SCRIPT_DIR}"/tester
+DATA_DIR="${TESTER_DIR}"/data
+MP3_DIR="${SCRIPT_DIR}"/../mp3
 TESTER_TIMEOUT="300s"
 
 # Set automatically
@@ -13,7 +13,7 @@ platform=
 
 verbose=true
 fail_fast=false
-bin_dir=$(realpath ${SCRIPT_DIR}/..)
+bin_dir=$(realpath "${SCRIPT_DIR}/..")
 
 __check_platform()
 {
@@ -84,10 +84,10 @@ run_tester() {
     fi
 
     timeoutflag="-test.timeout ${TESTER_TIMEOUT}"
-    export BIN_DIR=${bin_dir}
-    export MP3_DIR=$MP3_DIR
-    export DATA_DIR=$DATA_DIR
-    ${tester_path}/${tester_name} $vflag $failflag $timeoutflag $@
+    export BIN_DIR="${bin_dir}"
+    export MP3_DIR="$MP3_DIR"
+    export DATA_DIR="$DATA_DIR"
+    "${tester_path}/${tester_name}" $vflag $failflag $timeoutflag $@
 }
 
 do_server() {
