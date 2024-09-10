@@ -4,6 +4,8 @@ snowcast_protocol = Proto("CS168Snowcast", "CS168 Snowcast Protocol")
 
 message = ProtoField.uint8("cs168snowcast.messsage_type", "messageType", base.DEC)
 
+valid = ProtoField.bool("cs168snowcast.valid", "Valid format")
+
 -- HELLO fields
 udp_port = ProtoField.uint16("cs168snowcast.udp_port", "udpPort", base.DEC)
 -- SET_STATION fields
@@ -18,6 +20,7 @@ reply_string_size = ProtoField.uint8("cs168snowcast.reply_string_size", "replySt
 reply_string = ProtoField.string("cs168snowcast.reply_string", "replyString")
 
 snowcast_protocol.fields = {
+	valid,
   message,
   udp_port,
   station_number,
@@ -83,10 +86,33 @@ function snowcast_protocol.dissector(buffer, pinfo, tree)
 
     pinfo.cols.info:append(" (Reply String [" .. replyStringSize .. " bytes]: " .. replyString .. ") ")
   end
+
+	-- Check that the message is well-formatted (for now, that it is the correct length
+	-- and that the message is not UNKNOWN)
+	if message_name == "UNKNOWN" then
+		pinfo.cols.info:append(" [UNKNOWN MESSAGE TYPE] ")
+		subtree:add(valid, false)
+    return
+  end
+
+  local expected, actual = 0, length
+  if message_num == 0 then expected = 3
+  elseif message_num == 1 then expected = 3
+  elseif message_num == 2 then expected = 3
+  elseif message_num == 3 then expected = buffer(1, 1):uint() + 2
+  elseif message_num == 4 then expected = buffer(1, 1):uint() + 2
+	end
+
+  if expected ~= actual then
+    subtree:add(valid, false):append_text(" (Expected length " .. expected .. ", got " .. actual .. ") ")
+    pinfo.cols.info:append(" [UNEXPECTED MESSAGE LENGTH] ")
+  else
+    subtree:add(valid, true)
+  end
 end
 
 function get_message_name(message_num)
-  local message_name = "UNNOWN"
+  local message_name = "UNKNOWN"
 
   if message_num == 0 then
     message_name = "HELLO"

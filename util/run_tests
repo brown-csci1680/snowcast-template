@@ -2,12 +2,12 @@
 set -euo pipefail
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 TESTER_DIR="${SCRIPT_DIR}"/tester
 DATA_DIR="${TESTER_DIR}"/data
 MP3_DIR="${SCRIPT_DIR}"/../mp3
 TESTER_TIMEOUT="300s"
 
-# Set automatically
 arch="`uname -m`"
 platform=
 
@@ -32,6 +32,7 @@ This command runs tester programs for each component
 of Snowcast.
 
 Top-level options:
+ --bin-dir   Directory containing snowcast_* binaries
  --quiet     Don't print the output of each test
  --fail-fast Stop after the first test failure
  --arm       Force using binaries for arm64 platform

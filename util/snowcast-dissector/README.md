@@ -62,6 +62,24 @@ that the plugin is loaded in the help menu.
 The steps listed above will invoke the decoder only on a single TCP port. You
 should repeat the steps above each time you change TCP ports
 
+### Coloring rules (optional)
+
+This dissector also includes rules to highlight invalid packets, but
+these must be installed separately.  Coloring rules do not add any
+extra dissection info, but may help make it easier to identify invalid
+packets.  To add the coloring rules:
+ 1. In Wireshark, go to **View** > **Coloring Rules**
+ 2. Click **Import...** 
+ 3. Select the file `cs168_snowcast_coloring.txt`, located in this
+    directory.  You should see this add a new rule "Bad CS168Snowcast"
+    to the list of rules
+ 4. Click and drag the rule to the top of the list
+ 5. Click **OK**
+ 
+When coloring rules are applied, packets are highlighted in yellow if
+they have an invalid length or message type.  If you don't see invalid
+packets highlighted immediately, you may need to restart Wireshark.
+
 ## Feedback
 
 If you have questions or encounter any issues with the decoder, please post on
