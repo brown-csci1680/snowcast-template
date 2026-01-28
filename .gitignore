@@ -7,5 +7,6 @@
 
 # Created by tester
 /stations
-/reference/stations
-/reference/arm64/stations
+/reference
+/util/tester
+/util/bins_version.txt
